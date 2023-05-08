@@ -321,3 +321,4 @@ void resetLCD() {
   lcd.print("LCD RESET"); // In ra thông báo LCD đã được reset
   lcd.clear(); // Xóa toàn bộ màn hình
 }
+void hello(){}
