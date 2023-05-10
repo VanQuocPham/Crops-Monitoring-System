@@ -6,6 +6,7 @@
 #include<stdio.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <BH1750.h>
 
 #define FIREBASE_HOST "readtemphumi-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "qhMBENlso11IhSldZAvefbmN5gqqW5moVpqigphX"
@@ -15,10 +16,11 @@
 
 #define DHTPIN 15
 #define DHTTYPE DHT11
-#define relayLight 2
-#define relayFan 0
+#define relayLight 5
+#define relayFan 18 
 #define soilSsPin 34
 
+//DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
 FirebaseData firebaseData ;
@@ -40,7 +42,11 @@ byte colPins[COLS] = {25, 33, 32, 19}; //connect to the column pinouts of the ke
 Keypad keypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
 // LCD
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 20, 4);
+
+//BH1750
+BH1750 lightMeter;
+
 typedef enum {
   AUTOMATIC = 0,
   HANDWORK = 1,
@@ -59,6 +65,12 @@ void setup() {
   Serial.begin(9600);
   delay(1000);
 
+    //ConnectWifi
+  connectWiFi();
+
+  //Connect Firebase
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+  
   //DHT
   dht.begin();
 
@@ -67,16 +79,14 @@ void setup() {
   lcd.init();   // Initialize the LCD screen
   lcd.backlight(); // Turn on backlight
 
-  //ConnectWifi
-  connectWiFi();
-
-  //Connect Firebase
-  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-
+  //BH1750
+  lightMeter.begin();
+  
   timeWaitRead = millis();
-  Serial.print("timeWaitRead: ");
-  Serial.print(timeWaitRead);
-  Serial.print("\n");
+//  Serial.print("timeWaitRead: ");
+//  Serial.print(timeWaitRead);
+//  Serial.print("\n");
+
   pinMode(relayLight, OUTPUT);
   pinMode(relayFan, OUTPUT);
   pinMode(soilSsPin, INPUT);
@@ -95,6 +105,7 @@ void loop() {
   selectModeActive();
 
   if (resetLCDFlag) {
+    Serial.print("Reset LCD");
     resetLCD();
     resetLCDFlag = false;
   }
@@ -153,6 +164,14 @@ int readSoilMoisture() {
   Serial.print(" %\n");
   return realPercentage;
 }
+
+float readLightIntensity(){
+  float lux = lightMeter.readLightLevel();
+  Serial.print("Light: ");
+  Serial.print(lux);
+  Serial.println(" lx");
+  return lux;
+}
 // set data
 void setData(const char* field, const char* value) {
   if (Firebase.setString(firebaseData, field, value)) {
@@ -208,6 +227,7 @@ void handleTempHumi() {
 void runModeAutomatic() {
   if ((unsigned long)millis() - timeWaitRead >= 5000) {
     int percentSoilCoisture = readSoilMoisture();
+    readLightIntensity();
     handleTempHumi();
     timeWaitRead = millis();
   }
@@ -223,7 +243,7 @@ void runModeAutomatic() {
 
 void runModeHandwork() {
   turnOnRelayHandwork();
-  turnOffRelayHandwork();
+//  turnOffRelayHandwork();
   fan = getData("FAN");
   light = getData("LIGHT");
   controlRelay(fan, relayFan, "QUAT");
@@ -240,18 +260,17 @@ void runModeHandwork() {
 }
 
 void turnOnRelayHandwork() {
-  char keyTurnOn = keypad.getKey();
-  if (keyTurnOn == '1') {
+  if (key == '1') {
     setData("FAN", "ON ");
   }
-  else if (keyTurnOn == '2') {
+  else if (key == '2') {
     setData("LIGHT", "ON ");
   }
-  else if (keyTurnOn == '3') {
+  else if (key == '3') {
     //    setData("....", "ON");
     Serial.print("PhunSuong ON\n");
   }
-  else if (keyTurnOn == '4') {
+  else if (key == '4') {
     //    setData("...."."ON ");
     Serial.print("Rem ON\n");
   }
@@ -294,10 +313,11 @@ void keypadEvent(KeypadEvent key) {
       if (key == '0') {
         resetLCDFlag = true;
       }
-      else if (key == '1' || key == '2' || key == '3' || key == '4') {
-        keyHoldTurnOff = key;
-        turnOffRelayFlag = true;
-      }
+//      else if (key == '1' || key == '2' || key == '3' || key == '4') {
+//        keyHoldTurnOff = key;
+//        turnOffRelayFlag = true;
+//      }
+      break;
   }
 }
 
@@ -321,4 +341,3 @@ void resetLCD() {
   lcd.print("LCD RESET"); // In ra thông báo LCD đã được reset
   lcd.clear(); // Xóa toàn bộ màn hình
 }
-void hello(){}
