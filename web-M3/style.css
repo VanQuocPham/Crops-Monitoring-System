@@ -1,0 +1,289 @@
+* {
+	padding	: 0;
+	margin: 0;
+	font-family: "roboto", sans-serif;
+}
+
+body .a{
+	text-align: center;
+	padding: 15px 5px;
+	font-size: 12px;
+	color: black;
+	font-family: "segoe UI", sans-serif;
+/*	width: 450px;*/
+	border: 3px solid #2E94E3;
+	border-radius: 5px;
+	font-weight: 450;
+	letter-spacing: 3px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+body h1{
+	text-align: center;
+}
+body h2{
+	text-align: center;
+	padding: 15px 5px;
+	font-size: 15px;
+	color: black;
+	font-family: "segoe UI", sans-serif;
+	/* border: 2px solid #2E94E3; */
+	/* border-radius: 5px; */
+	font-weight: 300;
+	letter-spacing: 3px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.row1 {
+	width: 30%;
+	padding: 1.5%;
+	font-weight: bold;
+	transform: translateX(650px);
+	font-size: 15px;
+	border: 1px solid #ccc;
+	text-align: center;
+	background-color: orange;
+	border-radius: 10px;
+}
+.row2 {
+	display: flex;
+  	justify-content: space-between;
+	width: 90%;
+	border: 3px solid #b865a7;
+	border-radius: 20px;
+	padding: 2%;
+	transform: translateX(27px);
+}
+.column3 {
+	padding: 15px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	text-align: center;
+	background-color: white;
+	border-radius: 20px;
+}
+.wrapper {
+	width: 1000px;
+	height: fit-content;
+	margin: 0 auto;
+	background-color: white;
+}
+.header {
+	height: 100px;
+	background: lightblue;
+	display: flex;
+	align-items: center;
+}
+.logo {
+    margin-right: 10px;
+    padding-left: 30px;
+}
+
+.logo img {
+    width: 70px;
+    height: 70px;
+}
+
+.school-name h4 {
+	font-size: 20px;
+    margin: 0;
+}
+
+.container {
+  min-width: 950px;
+  max-width: 1000px;
+  height: 700px;
+  margin: 0 auto;
+  width: 50%;
+  padding: 2%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-wrap: wrap;
+}
+.container3 {
+	min-width: 950px;
+	max-width: 1000px;
+	height: 700px;
+	margin: 0 auto;
+	width: 50%;
+	padding: 2%;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	display: flex;
+	flex-wrap: wrap;
+  }
+
+
+.chart {
+  width: 100%;
+  height: 100%;
+}
+
+
+header {
+	height: 150px;
+	background: lightblue;
+	padding-left: 10px;
+}
+header h4 {
+	text-align: center;
+	font-size: 15px;
+	color: black;
+}
+header .new_list2 .news_item2{
+	width: 18%;
+	padding: 2%;
+	float: left;
+}
+body {
+	width: 1000px;
+	height: 1630px;
+	margin: 0 auto;
+	padding: 15px 0;
+	font-size: 15px;
+	text-transform: uppercase;
+	background-color: #031321;
+	display: flex;
+	justify-content: center;
+}
+.container1{
+	display: flex;
+	justify-content: space-between;
+}
+.column{
+	width: 40%;
+	border: 3px solid #b865a7;
+	border-radius: 20px;
+	padding: 2%;
+}
+.column1{
+	transform: translateX(25px);
+}
+.column2{
+	transform: translateX(-25px);
+}
+.new_list1 {
+	width: 90%;
+	transform: translateX(30px);
+  }
+.news_item1 {
+	margin-bottom: 25px;
+	padding: 15px;
+	font-size: 14px;
+	/* border: 1px solid #ccc; */
+	text-align: center;
+	background-color: white;
+	border-radius: 30px;
+}
+.new_list2{
+	width: 80%;
+	transform: translateX(45px);
+}
+.news_item2{
+	margin-bottom: 30px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	text-align: center;
+	box-sizing: border-box;
+	border-radius: 30px;
+	background-color: white;
+}
+
+footer{
+	background: lightblue;
+	line-height: 80px;
+	text-align: center;
+	color: black;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.chart-container {
+	width: 50%;
+	height: 50%;
+	padding: 2%;
+	box-sizing: border-box;
+  }
+  .chart-container3 {
+	width: 50%;
+	height: 50%;
+	padding: 2%;
+	box-sizing: border-box;
+  }
+
+button.active {
+  background-color: #00ff00; /* Màu khi nút ON được bật */
+}
+.news_item1.temperature {
+	background-color: red;
+  }
+
+  .news_item1.sunlight {
+	background-color: orange;
+  }
+
+  .news_item1.moisture {
+	background-color: burlywood;
+  }
+
+  .news_item1.air-humidity {
+	background-color: blueviolet;
+  }
+
+.menu {
+	list-style: none;
+	display: flex;
+	justify-content: left;
+	gap: 20px;
+	background-color: lightblue;
+	align-items: center;
+	padding: 15px;
+	font-family: monospace;
+	font-size: 20px;
+	font-weight: bold;
+	margin: 0;
+}
+
+.menu li a {
+	text-decoration: none !important;
+	color: black;
+}
+
+.menu li a:hover {
+	color: orange;
+}
+
+.menu li a.active-menu {
+	color: orange;
+}
+.btnOn4, .btnOff4 {
+	font-size: 16px; /* Kích thước chữ */
+	padding: 10px 20px; /* Khoảng cách giữa văn bản và viền */
+  }
+  .btnOn3, .btnOff3 {
+	font-size: 16px; /* Kích thước chữ */
+	padding: 10px 20px; /* Khoảng cách giữa văn bản và viền */
+  }
+  .btnOn2, .btnOff2 {
+	font-size: 16px; /* Kích thước chữ */
+	padding: 10px 20px; /* Khoảng cách giữa văn bản và viền */
+  }
+  .btnOn1, .btnOff1 {
+	font-size: 16px; /* Kích thước chữ */
+	padding: 10px 20px; /* Khoảng cách giữa văn bản và viền */
+  }
+  .btnOn5, .btnOff5 {
+	font-size: 16px; /* Kích thước chữ */
+	padding: 10px 20px; /* Khoảng cách giữa văn bản và viền */
+  }
+  .btnOn6, .btnOff6 {
+	font-size: 16px; /* Kích thước chữ */
+	padding: 10px 20px; /* Khoảng cách giữa văn bản và viền */
+  }
