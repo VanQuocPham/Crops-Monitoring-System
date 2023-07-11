@@ -1,25 +1,13 @@
-#include <ArduinoJson.h>
-#include <BH1750.h>
-#include <DHT.h>
-#include <FirebaseESP32.h>
-#include <Keypad.h>
-#include <LiquidCrystal_I2C.h>
-#include <SimpleKalmanFilter.h>
-#include <WiFi.h>
-#include <Wire.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
+#include <main.h>
 
 #define FIREBASE_HOST "readtemphumi-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "qhMBENlso11IhSldZAvefbmN5gqqW5moVpqigphX"
 
-#define WIFI_SSID "Lính Thuỷ Đánh Bạc"
-#define WIFI_PASSWORD "07091995"
+// #define WIFI_SSID "Lính Thuỷ Đánh Bạc"
+// #define WIFI_PASSWORD "07091995"
 
-// #define WIFI_SSID "Tang 3.1"
-// #define WIFI_PASSWORD "14220auco"
+#define WIFI_SSID "Tang 3.1"
+#define WIFI_PASSWORD "14220auco"
 // #define WIFI_SSID "tang 3.2"
 // #define WIFI_PASSWORD "giangthang789"
 
@@ -37,6 +25,8 @@
 #define PIN_5V 36
 #define PIN_SOLAR 35
 #define PIN_VSOLAR 32
+#define PIN_AUTOMATIC 25
+#define PIN_MANUAL 26
 
 // DHT11
 DHT dht(DHTPIN, DHTTYPE);
@@ -73,7 +63,7 @@ typedef enum {
 } ModeActive;
 
 struct ParamSystem {
-    int lightIntensity;
+    int amountLight;
     int percentSM;
     float temperature;
     float humidity;
@@ -98,27 +88,12 @@ bool resetLCDFlag = false;
 bool turnOffRelayFlag = false;
 bool flagAutomatic = false;
 bool flagGetParam = false;
+bool checkModeAtm = false;  // Biến kiểm tra câu lệnh đã được thực hiện hay chưa
+bool checkModeHw = false;  // Biến kiểm tra câu lệnh đã được thực hiện hay chưa
 char keyHoldTurnOff;
 float R1 = 30000.00;
 float R2 = 7500.00;
 
-bool turnOffRelayHandwork();
-void initWiFi();
-void setData(const char* field, const char* value);
-void keypadEvent(KeypadEvent key);
-void resetLCD();
-void selectModeActive();
-void reconnectWiFi();
-void displayParamSystem();
-void turnOnRelayHandwork();
-void initDisplay();
-String getData(const char* field);
-float* readCurrent(float pin);
-void getParamSensors();
-void updateCurrentPower();
-float readVoltage(float pin);
-float mapp(long x, long in_min, long in_max, long out_min, long out_max);
-void connectFirebase();
 void setup() {
     Serial.begin(115200);
     delay(1000);
@@ -132,9 +107,9 @@ void setup() {
     initWiFi();
 
     // Connect Firebase
-    Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+    // Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
 
-    // connectFirebase();
+    connectFirebase();
 
     // DHT
     dht.begin();
@@ -151,6 +126,8 @@ void setup() {
     pinMode(PIN_12V, INPUT);
     pinMode(PIN_5V, INPUT);
     pinMode(PIN_VSOLAR, INPUT);
+    pinMode(PIN_AUTOMATIC,OUTPUT);
+    pinMode(PIN_MANUAL, OUTPUT);
     setData("/ControlDevice/LIGHT", "OFF");
     setData("/ControlDevice/FAN", "OFF");
     setData("/ControlDevice/MIST", "OFF");
@@ -168,11 +145,11 @@ void loop() {
     if (WiFi.status() != WL_CONNECTED) {
         reconnectWiFi();
     }
-
-    if ( (unsigned long) millis() - timeWaitRead >= 10000) {
+    unsigned long currentMillis = millis();
+    if (currentMillis - timeWaitRead >= 10000) {
         flagAutomatic = true;
         flagGetParam = true;
-        timeWaitRead = (unsigned long) millis();
+        timeWaitRead = currentMillis;
     }
     if (flagGetParam == true) {
         getParamSensors();
@@ -210,11 +187,11 @@ void initWiFi() {
     Serial.print("IP Address is : ");
     Serial.println(WiFi.localIP());
 }
-void connectFirebase(){
+void connectFirebase() {
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-    while(!Firebase.ready()){
-    Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-    Serial.print("Connecting With Firebase...!!\n");
+    while (!Firebase.ready()) {
+        Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+        Serial.print("Connecting With Firebase...!!\n");
     }
     Serial.print("Connected With Firebase...!!\n");
 }
@@ -231,8 +208,7 @@ void reconnectWiFi() {
 }
 
 float* readTempHumi() {
-    // static float result[2];
-    float* result =  (float*)malloc(2*sizeof(float));
+    float* result = (float*)malloc(2 * sizeof(float));
     float humidity = dht.readHumidity();
     float temperature = dht.readTemperature();
     if (isnan(humidity) || isnan(temperature)) {
@@ -280,20 +256,21 @@ void getParamSensors() {
     param.humidity = tempHumi[0];
     param.temperature = tempHumi[1];
     param.percentSM = readSoilMoisture();
-    param.lightIntensity = readLightIntensity();
+    param.amountLight = readLightIntensity();
     // updateCurrentPower();
     // readVoltage(PIN_VSOLAR);
     float* currentPowerLoad12V = readCurrent(PIN_12V);
     float* currentPowerLoad5V = readCurrent(PIN_5V);
     float* currentPowerSolar = readCurrent(PIN_SOLAR);
-    param.currentOfLoad = (round((currentPowerLoad12V[0] + currentPowerLoad5V[0])*100))/100;
-    param.powerOfLoad = (round((currentPowerLoad12V[1] + currentPowerLoad5V[1])*100))/100;
-    param.currentOfSolar = (round(currentPowerSolar[0]*100))/100;
-    param.powerOfSolar = (round(currentPowerSolar[1]*100))/100;
+    param.currentOfLoad = ((float)((int)((currentPowerLoad12V[0] + currentPowerLoad5V[0]) * 100 + 0.5))) / 100.0;
+    param.powerOfLoad = ((float)((int)((currentPowerLoad12V[1] + currentPowerLoad5V[1]) * 100 + 0.5))) / 100.0;
+    param.currentOfSolar = ((int)(currentPowerSolar[0] * 100 + 0.5)) / 100.0;
+    param.powerOfSolar = ((int)(currentPowerSolar[1] * 100 + 0.5)) / 100.0;
+    // printf("currentOfLoad: %f\t\npowerOfLoad %f\t\ncurrentOfSolar%f\t\npowerOfSolar%f\t\n", param.currentOfLoad, param.powerOfLoad, param.currentOfSolar, param.powerOfSolar);
 
     Firebase.setFloat(firebaseData, "/Sensor/DHT11/Humidity", param.humidity);
     Firebase.setFloat(firebaseData, "/Sensor/DHT11/Temperature", param.temperature);
-    Firebase.setFloat(firebaseData, "/Sensor/LightIntensity", param.lightIntensity);
+    Firebase.setFloat(firebaseData, "/Sensor/LightIntensity", param.amountLight);
     Firebase.setInt(firebaseData, "/Sensor/SoilMoisture", param.percentSM);
     Firebase.setFloat(firebaseData, "/Energy/Load/Current", param.currentOfLoad);
     Firebase.setFloat(firebaseData, "/Energy/Load/Power", param.powerOfLoad);
@@ -340,45 +317,90 @@ void controlDevice(int pin, bool statusRelay, const char* device) {
     }
 }
 
-void   handleModeAutomatic() {
+void handleModeAutomatic() {
+    // if (param.temperature >= 30 || param.humidity > 70) {
+    //     controlDevice(relayFan, HIGH, "/ControlDevice/FAN");
+    //     controlDevice(relayHeating, LOW, "/ControlDevice/HEATING");
+
+    // } else if (param.temperature <= 20) {
+    //     controlDevice(relayHeating, HIGH, "/ControlDevice/HEATING");
+    //     controlDevice(relayFan, LOW, "/ControlDevice/FAN");
+    // } else {
+    //     controlDevice(relayFan, LOW, "/ControlDevice/FAN");
+    //     controlDevice(relayHeating, LOW, "/ControlDevice/HEATING");
+    // }
+    // if (param.humidity >= 50 && param.humidity <= 70) {
+    //     controlDevice(relayMist, LOW, "/ControlDevice/MIST");
+
+    // } else if (param.humidity < 50) {
+    //     controlDevice(relayMist, HIGH, "/ControlDevice/MIST");
+    // }
+    // if (param.percentSM >= 45 && param.percentSM <= 100) {
+    //     controlDevice(relayPump, LOW, "/ControlDevice/PUMP");
+
+    // } else {
+    //     controlDevice(relayPump, HIGH, "/ControlDevice/PUMP");
+    // }
+    // if (param.amountLight < 2000) {
+    //     controlDevice(relayLight, HIGH, "/ControlDevice/LIGHT");
+    // } else if (param.amountLight >= 2000 && param.amountLight <= 3000) {
+    //     controlDevice(relayLight, LOW, "/ControlDevice/LIGHT");
+    // } else {
+    //     controlDevice(relayLight, LOW, "/ControlDevice/LIGHT");
+    // }
+    // fan = getData("/ControlDevice/FAN");
+    // light = getData("/ControlDevice/LIGHT");
+    // mist = getData("/ControlDevice/MIST");
+    // heating = getData("/ControlDevice/HEATING");
+    // pump = getData("/ControlDevice/PUMP");
+    bool fanState;
+    bool lightState;
+    bool mistState;
+    bool pumpState;
+    bool heatingState;
     if (param.temperature >= 30 || param.humidity > 70) {
-        controlDevice(relayFan,HIGH,"/ControlDevice/FAN");
-        controlDevice(relayHeating,LOW,"/ControlDevice/HEATING");
+    fanState = HIGH;
+    heatingState = LOW;
+} else if (param.temperature <= 20) {
+    heatingState = HIGH;
+    fanState = LOW;
+} else {
+    fanState = LOW;
+    heatingState = LOW;
+}
 
-    } else if (param.temperature <= 20) {
-        controlDevice(relayHeating,HIGH,"/ControlDevice/HEATING");
-    } else {
-        // setData("/ControlDevice/FAN", "OFF");
-        controlDevice(relayFan,LOW,"/ControlDevice/FAN");
-        controlDevice(relayHeating,LOW,"/ControlDevice/HEATING");
+if (param.humidity >= 50 && param.humidity <= 70) {
+    mistState = LOW;
+} else if (param.humidity < 50) {
+    mistState = HIGH;
+}
 
-    }
-    if (param.humidity >= 50 && param.humidity <= 70) {
-        controlDevice(relayMist,LOW,"/ControlDevice/MIST");
+if (param.percentSM >= 45 && param.percentSM <= 100) {
+    pumpState = LOW;
+} else {
+    pumpState = HIGH;
+}
 
-    } else if (param.humidity < 50) {
-        controlDevice(relayMist,HIGH,"/ControlDevice/MIST");
+if (param.amountLight < 2000) {
+    lightState = HIGH;
+} else if (param.amountLight >= 2000 && param.amountLight <= 3000) {
+    lightState = LOW;
+} else {
+    lightState = LOW;
+}
 
-    }
-    if (param.percentSM >= 45 && param.percentSM <= 100) {
-        controlDevice(relayPump,LOW,"/ControlDevice/PUMP");
+controlDevice(relayFan, fanState, "/ControlDevice/FAN");
+controlDevice(relayHeating, heatingState, "/ControlDevice/HEATING");
+controlDevice(relayMist, mistState, "/ControlDevice/MIST");
+controlDevice(relayPump, pumpState, "/ControlDevice/PUMP");
+controlDevice(relayLight, lightState, "/ControlDevice/LIGHT");
 
-    } else {
-        controlDevice(relayPump,HIGH,"/ControlDevice/PUMP");
-
-    }
-    if (param.lightIntensity < 2000) {
-        controlDevice(relayLight,HIGH,"/ControlDevice/LIGHT");
-    } else if (param.lightIntensity >= 2000 && param.lightIntensity <= 3000) {
-        controlDevice(relayLight,LOW,"/ControlDevice/LIGHT");
-    } else {
-        controlDevice(relayLight,LOW,"/ControlDevice/LIGHT");
-    }
-    fan = getData("/ControlDevice/FAN");
-    light = getData("/ControlDevice/LIGHT");
-    mist = getData("/ControlDevice/MIST");
-    heating = getData("/ControlDevice/HEATING");
-    pump = getData("/ControlDevice/PUMP");
+// Lấy trạng thái của các thiết bị từ hệ thống
+fan = getData("/ControlDevice/FAN");
+light = getData("/ControlDevice/LIGHT");
+mist = getData("/ControlDevice/MIST");
+heating = getData("/ControlDevice/HEATING");
+pump = getData("/ControlDevice/PUMP");
 }
 
 void runModeAutomatic() {
@@ -396,13 +418,13 @@ void runModeHandwork() {
     mist = getData("/ControlDevice/MIST");
     heating = getData("/ControlDevice/HEATING");
     pump = getData("/ControlDevice/PUMP");
-    if(flagChangeStateRl == "YES"){
-    controlRelay(fan, relayFan, "QUAT");
-    controlRelay(light, relayLight, "DEN");
-    controlRelay(mist, relayMist, "PS");
-    controlRelay(heating, relayHeating, "DENSuoi");
-    controlRelay(pump, relayPump, "BOM");
-    setData("/ChangeStateRelay", "NO");
+    if (flagChangeStateRl == "YES") {
+        controlRelay(fan, relayFan, "QUAT");
+        controlRelay(light, relayLight, "DEN");
+        controlRelay(mist, relayMist, "PS");
+        controlRelay(heating, relayHeating, "DENSuoi");
+        controlRelay(pump, relayPump, "BOM");
+        setData("/ChangeStateRelay", "NO");
     }
     displayParamSystem();
 }
@@ -468,10 +490,23 @@ void keypadEvent(KeypadEvent key) {
 
 void selectModeActive() {
     modeAtv = getData("/AModeActive");
-    if (modeAtv == "AUTOMATIC") {  // modeActive == AUTOMATIC ||
+    if (modeAtv == "AUTOMATIC") {
+        if (!checkModeAtm ) {
+            checkModeAtm = true;
+            checkModeHw = false;
+            digitalWrite(PIN_AUTOMATIC, HIGH);
+            digitalWrite(PIN_MANUAL, LOW);
+            Serial.printf("TC: %d\nTD:%d\n", digitalRead(PIN_MANUAL),digitalRead(PIN_AUTOMATIC));
+        }
         runModeAutomatic();
-    } else if (modeAtv == "HANDWORK") {  // modeActive == HANDWORK ||
-        Serial.print("HANDWORK !!!\n");
+    } else if (modeAtv == "HANDWORK") {
+        if (!checkModeHw) {
+            checkModeHw = true;
+            checkModeAtm = false;
+            digitalWrite(PIN_AUTOMATIC, LOW);
+            digitalWrite(PIN_MANUAL, HIGH);
+            Serial.printf("TC: %d\nTD:%d\n", digitalRead(PIN_MANUAL),digitalRead(PIN_AUTOMATIC));
+        }
         runModeHandwork();
     } else {
         //    initDisplay();
@@ -497,74 +532,74 @@ void initDisplay() {
 }
 void displayParamSystem() {
     char buff[5] = {0};
-    if (param.lightIntensity < 10) {
-        sprintf(buff, "   %d", param.lightIntensity);
-    } else if (param.lightIntensity < 100) {
-        sprintf(buff, "  %d", param.lightIntensity);
-    } else if (param.lightIntensity < 1000) {
-        sprintf(buff, " %d", param.lightIntensity);
-    } else if (param.lightIntensity < 10000) {
-        sprintf(buff, "%d", param.lightIntensity);
+    if (param.amountLight < 10) {
+        sprintf(buff, "   %d", param.amountLight);
+    } else if (param.amountLight < 100) {
+        sprintf(buff, "  %d", param.amountLight);
+    } else if (param.amountLight < 1000) {
+        sprintf(buff, " %d", param.amountLight);
+    } else if (param.amountLight < 10000) {
+        sprintf(buff, "%d", param.amountLight);
         Serial.print(buff);
     }
-        // NhietDo
-        lcd.setCursor(1, 0);
-        lcd.print("T");
-        lcd.setCursor(0, 1);
-        lcd.print((int)param.temperature);
-        lcd.setCursor(2, 1);
-        lcd.print("C");
-        // Do Am Khong Khi
-        lcd.setCursor(5, 0);
-        lcd.print("H");
-        lcd.setCursor(4, 1);
-        lcd.print((int)param.humidity);
-        lcd.setCursor(6, 1);
-        lcd.print("%");
-        // Anh sang
-        lcd.setCursor(10, 0);
-        lcd.print("AS");
-        lcd.setCursor(8, 1);
-        lcd.print(buff);  // param.lightIntensity
-        lcd.setCursor(12, 1);
-        lcd.print("lx");
-        // Do Am Dat
-        lcd.setCursor(15, 0);
-        lcd.print("DD");
-        lcd.setCursor(15, 1);
-        lcd.print(param.percentSM);
-        lcd.setCursor(18, 1);
-        lcd.print("%");
-        // Den
-        lcd.setCursor(0, 2);
-        lcd.print("DEN");
-        lcd.setCursor(0, 3);
-        lcd.print(light);
-        // Bom
-        lcd.setCursor(4, 2);
-        lcd.print("BOM");
-        lcd.setCursor(4, 3);
-        lcd.print(pump);
-        // Quat
-        lcd.setCursor(8, 2);
-        lcd.print("QUAT");
-        lcd.setCursor(8, 3);
-        lcd.print(fan);
-        // Phun Suong
-        lcd.setCursor(13, 2);
-        lcd.print("PS");
-        lcd.setCursor(13, 3);
-        lcd.print(mist);
-        // Rem
-        lcd.setCursor(17, 2);
-        lcd.print("DS");
-        lcd.setCursor(17, 3);
-        lcd.print(heating);
+    // NhietDo
+    lcd.setCursor(1, 0);
+    lcd.print("T");
+    lcd.setCursor(0, 1);
+    lcd.print((int)param.temperature);
+    lcd.setCursor(2, 1);
+    lcd.print("C");
+    // Do Am Khong Khi
+    lcd.setCursor(5, 0);
+    lcd.print("H");
+    lcd.setCursor(4, 1);
+    lcd.print((int)param.humidity);
+    lcd.setCursor(6, 1);
+    lcd.print("%");
+    // Anh sang
+    lcd.setCursor(10, 0);
+    lcd.print("AS");
+    lcd.setCursor(8, 1);
+    lcd.print(buff); 
+    lcd.setCursor(12, 1);
+    lcd.print("lx");
+    // Do Am Dat
+    lcd.setCursor(15, 0);
+    lcd.print("DD");
+    lcd.setCursor(15, 1);
+    lcd.print(param.percentSM);
+    lcd.setCursor(18, 1);
+    lcd.print("%");
+    // Den
+    lcd.setCursor(0, 2);
+    lcd.print("DEN");
+    lcd.setCursor(0, 3);
+    lcd.print(light);
+    // Bom
+    lcd.setCursor(4, 2);
+    lcd.print("BOM");
+    lcd.setCursor(4, 3);
+    lcd.print(pump);
+    // Quat
+    lcd.setCursor(8, 2);
+    lcd.print("QUAT");
+    lcd.setCursor(8, 3);
+    lcd.print(fan);
+    // Phun Suong
+    lcd.setCursor(13, 2);
+    lcd.print("PS");
+    lcd.setCursor(13, 3);
+    lcd.print(mist);
+    // Rem
+    lcd.setCursor(17, 2);
+    lcd.print("DS");
+    lcd.setCursor(17, 3);
+    lcd.print(heating);
     // }
 }
 
 float* readCurrent(float pin) {
-    float* result =  (float*)malloc(2*sizeof(float));
+    float* result = (float*)malloc(2 * sizeof(float));
     float sum = 0;
     float current = 0, power = 0;
     float sumavg = 0;
@@ -629,7 +664,7 @@ float readVoltage(float pin) {
     float sum = sumVolt / 300;
     // float sumVoltAvg = sumVolt / 300;
     // Vin = sumVoltAvg / (R2 / (R1 + R2));
-    float voltage = mapp(sum,0,4095,0.00,24.00);
+    float voltage = mapp(sum, 0, 4095, 0.00, 24.00);
     Serial.printf("adc = %0.2f\n", sum);
     Serial.printf("Vin = %0.2f\n", voltage);
     return Vin;
@@ -643,6 +678,6 @@ float mapp(long x, long in_min, long in_max, long out_min, long out_max) {
     }
     const long rise = out_max - out_min;
     const long delta = x - in_min;
-    float result = ((float)(delta * rise) / run + out_min) *0.7;
+    float result = ((float)(delta * rise) / run + out_min) * 0.7;
     return result;
 }
