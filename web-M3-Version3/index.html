@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>HE THONG GIAM SAT</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.33/moment-timezone-with-data-10-year-range.min.js"></script>
+  <script src="https://momentjs.com/downloads/moment-timezone-with-data.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <div class="logo">
+        <a href="#"><img src="img/bk.jpg" alt="Logo"></a>
+        <a href="#"><img src="img/ete.png" alt="Logo"></a>
+      </div>
+      <div class="school-name">
+        <h4>Trường Đại học Bách khoa</h4>
+        <h4>Khoa Điện tử - Viễn thông</h4>
+      </div>
+    </div>
+    <br>
+    <div id="tendetai">
+      <h1 style="color: black;">HỆ THỐNG GIÁM SÁT VÀ CHĂM SÓC CÂY CÀ CHUA SỬ DỤNG PIN NĂNG LƯỢNG MẶT TRỜI</h1>
+    </div>
+    <br>
+    <br>
+    <div class="row1"><a>Thời gian: <span id="hvn"></span></a></div>
+    <br>
+    <ul class="menu">
+      <li><a class="active-menu menu-item1" href="#">TRANG CHỦ</a></li>
+      <li><a class="menu-item2" href="#">NĂNG LƯỢNG</a></li>
+    </ul>
+    <br>
+    <!-- Cập nhật hiển thị Thông số môi trường -->
+    <div class="container1">
+      <div id="display1">
+        <div class="column column1">
+          <h2>Thông số môi trường</h2>
+          <br>
+          <div class="new_list1">
+            <div class="news_item1">
+              <div class="news_item1 temperature">
+                <img class="card-img-top" src="./img/temperature.png" alt="Card image" style="width:25%">
+                <h3 style="color: black;">Nhiệt độ: <span id="nhietdo">00</span> *C</h3>
+              </div>
+            </div>
+            <div class="news_item1">
+              <div class="news_item1 sunlight">
+                <img class="card-img-top" src="./img/sun.png" alt="Card image" style="width:25%">
+                <h3 style="color: black">Ánh sáng: <span id="anhsang">00</span> Lux </h3>
+              </div>
+            </div>
+            <div class="news_item1">
+              <div class="news_item1 moisture">
+                <img class="card-img-top" src="./img/soil-analysis.png" alt="Card image" style="width:25%">
+                <h3 style="color: black">Độ ẩm: <span id="doam">00</span> %</h3>
+              </div>
+            </div>
+            <div class="news_item1">
+              <div class="news_item1 air-humidity">
+                <img class="card-img-top" src="./img/humidity.png" alt="Card image" style="width:25%">
+                <h3 style="color: black">Độ ẩm không khí: <span id="doamkk">00</span> %</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column column2">
+          <!-- Điều khiển thiết bị -->
+          <h2>Điều khiển thiết bị</h2>
+          <br>
+          <div class="new_list2">
+            <div class="news_item2">
+              <h3>Chọn chế độ</h3>
+              <img id="denId_05" class="card-img-top" src="./img/Hand.png" alt="Card image" style="width:25%">
+              <div class="content">
+                <button id="btnOnId_05" class="btnOn5">TỰ ĐỘNG</button>
+                <button id="btnOffId_05" class="btnOff5">THỦ CÔNG</button>
+              </div>
+            </div>
+
+            <div class="news_item2">
+              <h3>Đèn</h3>
+              <img id="denId_01" class="card-img-top" src="./img/ledOff.png" alt="Card image" style="width:25%">
+              <div class="content">
+                <button id="btnOnId_01" class="btnOn1">ON</button>
+                <button id="btnOffId_01" class="btnOff1">OFF </button>
+              </div>
+            </div>
+
+            <div class="news_item2">
+              <h3>Đèn sưởi</h3>
+              <img id="denId_06" class="card-img-top" src="./img/lampOff.png" alt="Card image" style="width:25%">
+              <div class="content">
+                <button id="btnOnId_06" class="btnOn6">ON</button>
+                <button id="btnOffId_06" class="btnOff6">OFF</button>
+              </div>
+            </div>
+
+            <div class="news_item2">
+              <h3>Bơm</h3>
+              <img id="denId_02" class="card-img-top" src="./img/BomOff.png" alt="Card image" style="width:25%">
+              <div class="content">
+                <button id="btnOnId_02" class="btnOn2">ON</button>
+                <button id="btnOffId_02" class="btnOff2">OFF </button>
+              </div>
+            </div>
+
+            <div class="news_item2">
+              <h3>Quạt</h3>
+              <img id="denId_03" class="card-img-top" src="./img/QuatOff.png" alt="Card image" style="width:25%">
+              <div class="content">
+                <button id="btnOnId_03" class="btnOn3">ON</button>
+                <button id="btnOffId_03" class="btnOff3">OFF</button>
+              </div>
+            </div>
+
+            <div class="news_item2">
+              <h3>Phun sương</h3>
+              <img id="denId_04" class="card-img-top" src="./img/phunSOff.png" alt="Card image" style="width:25%">
+              <div class="content">
+                <button id="btnOnId_04" class="btnOn4">ON</button>
+                <button id="btnOffId_04" class="btnOff4">OFF</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="display2" style="display: none;">
+        <div class="row2">
+          <h2>Năng lượng</h2>
+          <div class="column3">
+            <h3 style="color: orangered;">Năng lượng sạc</h3>
+            <img class="card-img-left" src="./img/solar.png" alt="Card image" style="width:15%">
+            <h3 style="color: blue;">Dòng điện: <span id="current1">00</span> A</h3>
+            <!-- <h3 style="color: blue;">Điện áp: <span id="V1">00</span> V</h3> -->
+            <h3 style="color: blue;">Công suất: <span id="power1">00</span> W</h3>
+          </div>
+          <div class="column3">
+            <h3 style="color: orangered;">Năng lượng tiêu thụ</h3>
+            <img class="card-img-left" src="./img/green.png" alt="Card image" style="width:15%">
+            <h3 style="color: blue;">Dòng điện: <span id="current2">00</span> A</h3>
+            <!-- <h3 style="color: blue;">Điện áp: <span id="V2">00</span> V</h3> -->
+            <h3 style="color: blue;">Công suất: <span id="power2">00</span> W</h3>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <!--Thẻ div tạo Biểu đồ -->
+    <div class="container">
+      <div class="chart-container">
+        <div id="chart-temperature" class="chart"></div>
+      </div>
+      <div class="chart-container">
+        <div id="chart-soilmoisture" class="chart"></div>
+      </div>
+      <div class="chart-container">
+        <div id="chart-humidity" class="chart"></div>
+      </div>
+      <div class="chart-container">
+        <div id="chart-light" class="chart"></div>
+      </div>
+    </div>
+
+    <div class="container3" style="display: none;">
+      <div class="chart-container3">
+        <div id="chart-temperature3" class="chart"></div>
+      </div>
+      <div class="chart-container3">
+        <div id="chart-soilmoisture3" class="chart"></div>
+      </div>
+      <div class="chart-container3">
+        <div id="chart-humidity3" class="chart"></div>
+      </div>
+      <div class="chart-container3">
+        <div id="chart-light3" class="chart"></div>
+      </div>
+    </div>
+    <div style="clear: both;"></div>
+
+    <script type="module">
+      //Kết nối và tương tác với firebase realtime database
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js" // thư viện cung cấp các phương thức và công cụ để làm việc với FRD
+      import { getDatabase,ref,set,onValue } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+
+
+      //cấu hình firebase, thông tin được lấy từ dự án được tạo
+      const firebaseConfig = {
+        apiKey: "AIzaSyB_J6xZ31VBMLbZ4MHMb9PhWJ5umdiwSao",
+        authDomain: "readtemphumi.firebaseapp.com",
+        databaseURL: "https://readtemphumi-default-rtdb.firebaseio.com",
+        projectId: "readtemphumi",
+        storageBucket: "readtemphumi.appspot.com",
+        messagingSenderId: "428204517205",
+        appId: "1:428204517205:web:8bd8b2a4d8a154b380b1dc",
+        measurementId: "G-L3773WVS9S"
+      };
+      const app = initializeApp(firebaseConfig); //khởi tạo ứng dụng firebase
+      const database = getDatabase(app); //lấy tham chiếu đến FRD, thực hiện đọc ghi dữ liệu
+
+      //cấu hình đèn
+      const ledRef = ref(database,'ControlDevice/LIGHT'); //tham chiếu đến đường dẫn trong FRD
+      const btnOn1 = document.getElementById("btnOnId_01"); //liên kết nút nhấn on
+      const btnOff1 = document.getElementById("btnOffId_01");
+
+      onValue(ledRef,(snapshot) => {
+        const value = snapshot.val();
+        if (value === "ON ") {
+          document.getElementById("denId_01").src = "./img/ledOn.png";
+          btnOn1.classList.add("active");
+          btnOff1.classList.remove("active");
+        } else {
+          document.getElementById("denId_01").src = "./img/ledOff.png";
+          btnOn1.classList.remove("active");
+          btnOff1.classList.add("active");
+        }
+      });
+
+      var btnOn = document.getElementById("btnOnId_01");
+      var btnOff = document.getElementById("btnOffId_01");
+
+      btnOn.onclick = function () {
+        document.getElementById("denId_01").src = "./img/ledOn.png";
+        btnOn1.classList.add("active");
+        btnOff1.classList.remove("active");
+        set(ref(database,'ControlDevice/LIGHT'),"ON "); //cập nhật giá trị trong thư mục đã chỉ định
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+
+      btnOff.onclick = function () {
+        document.getElementById("denId_01").src = "./img/ledOff.png";
+        btnOn1.classList.remove("active");
+        btnOff1.classList.add("active");
+        set(ref(database,'ControlDevice/LIGHT'),"OFF");
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+
+      //đèn sưởi
+      const led2Ref = ref(database,'ControlDevice/HEATING'); //tham chiếu đến đường dẫn trong FRD
+      const btnOn6 = document.getElementById("btnOnId_06"); //liên kết nút nhấn on
+      const btnOff6 = document.getElementById("btnOffId_06");
+
+      onValue(led2Ref,(snapshot) => {
+        const value = snapshot.val();
+        if (value === "ON ") {
+          document.getElementById("denId_06").src = "./img/lampOn.png";
+          btnOn6.classList.add("active");
+          btnOff6.classList.remove("active");
+        } else {
+          document.getElementById("denId_06").src = "./img/lampOff.png";
+          btnOn6.classList.remove("active");
+          btnOff6.classList.add("active");
+        }
+      });
+
+      var suoiOn = document.getElementById("btnOnId_06");
+      var suoiOff = document.getElementById("btnOffId_06");
+
+      suoiOn.onclick = function () {
+        document.getElementById("denId_06").src = "./img/lampOn.png";
+        btnOn6.classList.add("active");
+        btnOff6.classList.remove("active");
+        set(ref(database,'ControlDevice/HEATING'),"ON "); //cập nhật giá trị trong thư mục đã chỉ định
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+
+      suoiOff.onclick = function () {
+        document.getElementById("denId_06").src = "./img/lampOff.png";
+        btnOn6.classList.remove("active");
+        btnOff6.classList.add("active");
+        set(ref(database,'ControlDevice/HEATING'),"OFF");
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+
+      //Bom
+      const bomRef = ref(database,'ControlDevice/PUMP');
+      const btnOn2 = document.getElementById("btnOnId_02");
+      const btnOff2 = document.getElementById("btnOffId_02");
+      onValue(bomRef,(snapshot) => {
+        const value = snapshot.val();
+        if (value === "ON ") {
+          document.getElementById("denId_02").src = "./img/BomOn.png";
+          btnOn2.classList.add("active");
+          btnOff2.classList.remove("active");
+        } else {
+          document.getElementById("denId_02").src = "./img/BomOff.png";
+          btnOn2.classList.remove("active");
+          btnOff2.classList.add("active");
+        }
+      });
+
+      var bomOn = document.getElementById("btnOnId_02");
+      var bomOff = document.getElementById("btnOffId_02");
+
+      bomOn.onclick = function () {
+        document.getElementById("denId_02").src = "./img/BomOn.png";
+        btnOn2.classList.add("active");
+        btnOff2.classList.remove("active");
+        set(ref(database,'ControlDevice/PUMP'),"ON ");
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+
+      bomOff.onclick = function () {
+        document.getElementById("denId_02").src = "./img/BomOff.png";
+        btnOn2.classList.remove("active");
+        btnOff2.classList.add("active");
+        set(ref(database,'ControlDevice/PUMP'),"OFF");
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+      //Quat
+      const QuatRef = ref(database,'ControlDevice/FAN');
+      const btnOn3 = document.getElementById("btnOnId_03");
+      const btnOff3 = document.getElementById("btnOffId_03");
+      onValue(QuatRef,(snapshot) => {
+        const value = snapshot.val();
+        if (value === "ON ") {
+          document.getElementById("denId_03").src = "./img/QuatOn.png";
+          btnOn3.classList.add("active");
+          btnOff3.classList.remove("active");
+        } else {
+          document.getElementById("denId_03").src = "./img/QuatOff.png";
+          btnOn3.classList.remove("active");
+          btnOff3.classList.add("active");
+        }
+      });
+
+      var QuatOn = document.getElementById("btnOnId_03");
+      var QuatOff = document.getElementById("btnOffId_03");
+
+      QuatOn.onclick = function () {
+        document.getElementById("denId_03").src = "./img/QuatOn.png";
+        btnOn3.classList.add("active");
+        btnOff3.classList.remove("active");
+        set(ref(database,'ControlDevice/FAN'),"ON ");
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+
+      QuatOff.onclick = function () {
+        document.getElementById("denId_03").src = "./img/QuatOff.png";
+        btnOn3.classList.remove("active");
+        btnOff3.classList.add("active");
+        set(ref(database,'ControlDevice/FAN'),"OFF");
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+      //PhunSuong
+      const phunSRef = ref(database,'ControlDevice/MIST');
+      const btnOn4 = document.getElementById("btnOnId_04");
+      const btnOff4 = document.getElementById("btnOffId_04");
+      onValue(phunSRef,(snapshot) => {
+        const value = snapshot.val();
+        if (value === "ON ") {
+          document.getElementById("denId_04").src = "./img/phunSOn.png";
+          btnOn4.classList.add("active");
+          btnOff4.classList.remove("active");
+        } else {
+          document.getElementById("denId_04").src = "./img/phunSOff.png";
+          btnOn4.classList.remove("active");
+          btnOff4.classList.add("active");
+        }
+      });
+
+      var phunSOn = document.getElementById("btnOnId_04");
+      var phunSOff = document.getElementById("btnOffId_04");
+
+      phunSOn.onclick = function () {
+        document.getElementById("denId_04").src = "./img/phunSOn.png";
+        btnOn4.classList.add("active");
+        btnOff4.classList.remove("active");
+        set(ref(database,'ControlDevice/MIST'),"ON ");
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+
+      phunSOff.onclick = function () {
+        document.getElementById("denId_04").src = "./img/phunSOff.png";
+        btnOn4.classList.remove("active");
+        btnOff4.classList.add("active");
+        set(ref(database,'ControlDevice/MIST'),"OFF");
+        set(ref(database,'ChangeStateRelay'),"YES");
+      }
+
+      //Sellectmode
+      const SellRef = ref(database,'/AModeActive');
+      const btnOn5 = document.getElementById("btnOnId_05");
+      const btnOff5 = document.getElementById("btnOffId_05");
+      onValue(SellRef,(snapshot) => {
+        const value = snapshot.val();
+        if (value === "AUTOMATIC") {
+          document.getElementById("denId_05").src = "./img/Aut.png";
+          btnOn5.classList.add("active");
+          btnOff5.classList.remove("active");
+        } else if (value === "HANDWORK") {
+          document.getElementById("denId_05").src = "./img/Hand.png";
+          btnOn5.classList.remove("active");
+          btnOff5.classList.add("active");
+        } else {
+          document.getElementById("denId_05").src = "./img/Aut.png";
+        }
+      });
+
+      var SellOn = document.getElementById("btnOnId_05");
+      var SellOff = document.getElementById("btnOffId_05");
+
+      SellOn.onclick = function () {
+        document.getElementById("denId_05").src = "./img/Aut.png";
+        btnOn5.classList.add("active");
+        btnOff5.classList.remove("active");
+        set(ref(database,'/AModeActive'),"AUTOMATIC");
+        set(ref(database,'/ResetLCD'),"YES");
+      }
+
+      SellOff.onclick = function () {
+        document.getElementById("denId_05").src = "./img/Hand.png";
+        btnOn5.classList.remove("active");
+        btnOff5.classList.add("active");
+        set(ref(database,'/AModeActive'),"HANDWORK");
+        set(ref(database,'/ResetLCD'),"YES");
+      }
+
+      //hien thị Temp
+      const TempRef = ref(database,'Sensor/DHT11/Temperature');
+
+      onValue(TempRef,(snapshot) => {
+        const Temp = snapshot.val();
+        document.getElementById('nhietdo').innerHTML = Temp; //tự động cập nhật giá trị từ firebase qua web
+      },1000);
+
+      //hien thị anhsang
+      const AnhSRef = ref(database,'Sensor/LightIntensity');
+
+      onValue(AnhSRef,(snapshot) => {
+        const AnhS = snapshot.val();
+        document.getElementById('anhsang').innerHTML = AnhS;
+      },1000);
+
+      //hien thị doam
+      const DoamRef = ref(database,'Sensor/SoilMoisture');
+
+      onValue(DoamRef,(snapshot) => {
+        const Doam = snapshot.val();
+        document.getElementById('doam').innerHTML = Doam;
+      },1000);
+
+      //hien thị doamkk
+      const DoamkkRef = ref(database,'Sensor/DHT11/Humidity');
+
+      onValue(DoamkkRef,(snapshot) => {
+        const Doamkk = snapshot.val();
+        document.getElementById('doamkk').innerHTML = Doamkk;
+      },1000);
+
+    //hien thị current1
+      const current1Ref = ref(database,'Energy/Solar/Current');
+      onValue(current1Ref,(snapshot) => {
+        const current1 = snapshot.val();
+        document.getElementById('current1').innerHTML = current1;
+      },1000);
+      //hien thị power1
+      const power1Ref = ref(database,'Energy/Solar/Power');
+      onValue(power1Ref,(snapshot) => {
+        const power1 = snapshot.val();
+        document.getElementById('power1').innerHTML = power1;
+      },1000);
+
+      //hien thị current2
+      const current2Ref = ref(database,'Energy/Load/Current');
+      onValue(current2Ref,(snapshot) => {
+        const current2 = snapshot.val();
+        document.getElementById('current2').innerHTML = current2;
+      },1000);
+
+      //hien thị power2
+      const power2Ref = ref(database,'Energy/Load/Power');
+      onValue(power2Ref,(snapshot) => {
+        const power2 = snapshot.val();
+        document.getElementById('power2').innerHTML = power2;
+      },1000);
+
+      // Hiển thị thời gian hiện tại
+      function updateDateTime() {
+        var today = new Date();
+        var date = ("0" + today.getDate()).slice(-2) + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + today.getFullYear();
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        var time = hours + ":" + minutes + ":" + seconds;
+        var dateTime = " " + time + "; " + date;
+        document.getElementById("hvn").textContent = dateTime;
+      }
+
+      // Cập nhật ngày giờ liên tục
+      setInterval(updateDateTime,1000);
+
+      //Biểu đồ nhiệt độ
+      const temperatureChart = Highcharts.chart('chart-temperature',{
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg,
+          marginRight: 30,
+        },
+        title: {
+          text: 'Biểu đồ nhiệt độ',
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 30,
+          labels: {
+            formatter: function () {
+              const localTimestamp = moment(this.value).tz('Asia/Ho_Chi_Minh').format('HH:mm:ss DD-MM-YYYY');
+              return '<span style="white-space: nowrap;">' + localTimestamp + '</span>';
+            },
+            useHTML: true,
+            y: 25, // Khoảng cách dọc giữa label và trục y
+          },
+        },
+        yAxis: {
+          title: {
+            text: 'Nhiệt độ (°C)',
+          },
+        },
+        series: [
+          {
+            name: 'Nhiệt độ',
+            data: [], // Dữ liệu sẽ được cập nhật từ Firebase
+          },
+        ],
+      });
+
+      const temperatureRef = ref(database,'Sensor/DHT11/Temperature');
+      const temperatureData = []; // Mảng lưu trữ dữ liệu nhiệt độ
+
+      onValue(temperatureRef,(snapshot) => {
+        const value = snapshot.val();
+        const timestamp = Date.now();
+
+        temperatureData.push([timestamp,value]);
+
+        if (temperatureData.length > 1) {
+          temperatureData.shift(); // Xóa điểm đầu tiên
+
+          // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+          const firstTimestamp = temperatureData[0][0];
+          const lastTimestamp = temperatureData[temperatureData.length - 1][0];
+          temperatureChart.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+        }
+
+        temperatureChart.series[0].update({
+          data: temperatureData,
+        },true);
+      });
+
+      // Cập nhật giá trị từ Firebase sau mỗi 5 giây
+      setInterval(() => {
+        onValue(temperatureRef,(snapshot) => {
+          const value = snapshot.val();
+          const timestamp = Date.now();
+
+          temperatureData.push([timestamp,value]);
+
+          if (temperatureData.length > 3) {
+            temperatureData.shift(); // Xóa điểm đầu tiên
+
+            // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+            const firstTimestamp = temperatureData[0][0];
+            const lastTimestamp = temperatureData[temperatureData.length - 1][0];
+
+            temperatureChart.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+            temperatureChart.series[0].setData(temperatureData,true);
+          }
+        });
+      },5000);
+
+      //biểu đồ độ ẩm không khí
+      const HumidityChart = Highcharts.chart('chart-humidity',{
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg,
+          marginRight: 30,
+        },
+        title: {
+          text: 'Biểu đồ độ ẩm không khí',
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 30,
+          labels: {
+            formatter: function () {
+              const localTimestamp = moment(this.value).tz('Asia/Ho_Chi_Minh').format('HH:mm:ss DD-MM-YYYY');
+              return '<span style="white-space: nowrap;">' + localTimestamp + '</span>';
+            },
+            useHTML: true,
+            y: 25, // Khoảng cách dọc giữa label và trục y
+          },
+        },
+        yAxis: {
+          title: {
+            text: 'Độ ẩm (%)',
+          },
+        },
+        series: [
+          {
+            name: 'Độ ẩm không khí',
+            data: [], // Dữ liệu sẽ được cập nhật từ Firebase
+          },
+        ],
+      });
+
+      const HumidityRef = ref(database,'Sensor/DHT11/Humidity');
+      const HumidityData = []; // Mảng lưu trữ dữ liệu
+
+      onValue(HumidityRef,(snapshot) => {
+        const value = snapshot.val();
+        const timestamp = Date.now();
+
+        HumidityData.push([timestamp,value]);
+
+        if (HumidityData.length > 1) {
+          HumidityData.shift(); // Xóa điểm đầu tiên
+
+          // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+          const firstTimestamp = HumidityData[0][0];
+          const lastTimestamp = HumidityData[HumidityData.length - 1][0];
+          temperatureChart.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+        }
+
+        HumidityChart.series[0].update({
+          data: HumidityData,
+        },true);
+      });
+
+      // Cập nhật giá trị từ Firebase sau mỗi 5 giây
+      setInterval(() => {
+        onValue(HumidityRef,(snapshot) => {
+          const value = snapshot.val();
+          const timestamp = Date.now();
+
+          HumidityData.push([timestamp,value]);
+
+          if (HumidityData.length > 3) {
+            HumidityData.shift(); // Xóa điểm đầu tiên
+
+            // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+            const firstTimestamp = HumidityData[0][0];
+            const lastTimestamp = HumidityData[HumidityData.length - 1][0];
+
+            HumidityChart.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+            HumidityChart.series[0].setData(HumidityData,true);
+          }
+        });
+      },5000);
+
+      //biểu đồ ánh sáng
+      const LightChart = Highcharts.chart('chart-light',{
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg,
+          marginRight: 30,
+        },
+        title: {
+          text: 'Biểu đồ ánh sáng',
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 30,
+          labels: {
+            formatter: function () {
+              const localTimestamp = moment(this.value).tz('Asia/Ho_Chi_Minh').format('HH:mm:ss DD-MM-YYYY');
+              return '<span style="white-space: nowrap;">' + localTimestamp + '</span>';
+            },
+            useHTML: true,
+            y: 25, // Khoảng cách dọc giữa label và trục y
+          },
+        },
+        yAxis: {
+          title: {
+            text: 'Ánh sáng (lux)',
+          },
+        },
+        series: [
+          {
+            name: 'Ánh sáng',
+            data: [], // Dữ liệu sẽ được cập nhật từ Firebase
+          },
+        ],
+      });
+
+      const LightRef = ref(database,'Sensor/LightIntensity');
+      const LightData = []; // Mảng lưu trữ dữ liệu
+
+      onValue(LightRef,(snapshot) => {
+        const value = snapshot.val();
+        const timestamp = Date.now();
+
+        LightData.push([timestamp,value]);
+
+        if (LightData.length > 1) {
+          LightData.shift(); // Xóa điểm đầu tiên
+
+          // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+          const firstTimestamp = LightData[0][0];
+          const lastTimestamp = LightData[LightData.length - 1][0];
+          LightChart.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+        }
+
+        LightChart.series[0].update({
+          data: LightData,
+        },true);
+      });
+
+      // Cập nhật giá trị từ Firebase sau mỗi 5 giây
+      setInterval(() => {
+        onValue(LightRef,(snapshot) => {
+          const value = snapshot.val();
+          const timestamp = Date.now();
+
+          LightData.push([timestamp,value]);
+
+          if (LightData.length > 3) {
+            LightData.shift(); // Xóa điểm đầu tiên
+
+            // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+            const firstTimestamp = LightData[0][0];
+            const lastTimestamp = LightData[LightData.length - 1][0];
+
+            LightChart.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+            LightChart.series[0].setData(LightData,true);
+          }
+        });
+      },5000);
+
+      //biểu đồ độ ẩm đất
+      const SoilChart = Highcharts.chart('chart-soilmoisture',{
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg,
+          marginRight: 30,
+        },
+        title: {
+          text: 'Biểu đồ độ ẩm đất',
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 30,
+          labels: {
+            formatter: function () {
+              const localTimestamp = moment(this.value).tz('Asia/Ho_Chi_Minh').format('HH:mm:ss DD-MM-YYYY');
+              return '<span style="white-space: nowrap;">' + localTimestamp + '</span>';
+            },
+            useHTML: true,
+            y: 25, // Khoảng cách dọc giữa label và trục y
+          },
+        },
+        yAxis: {
+          title: {
+            text: 'Độ ẩm đất (%)',
+          },
+        },
+        series: [
+          {
+            name: 'Độ ẩm đất',
+            data: [], // Dữ liệu sẽ được cập nhật từ Firebase
+          },
+        ],
+      });
+
+      const SoilRef = ref(database,'Sensor/SoilMoisture');
+      const SoilData = []; // Mảng lưu trữ dữ liệu
+
+      onValue(SoilRef,(snapshot) => {
+        const value = snapshot.val();
+        const timestamp = Date.now();
+
+        SoilData.push([timestamp,value]);
+
+        if (SoilData.length > 1) {
+          SoilData.shift(); // Xóa điểm đầu tiên
+
+          // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+          const firstTimestamp = SoilData[0][0];
+          const lastTimestamp = SoilData[SoilData.length - 1][0];
+          SoilChart.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+        }
+
+        SoilChart.series[0].update({
+          data: SoilData,
+        },true);
+      });
+
+      // Cập nhật giá trị từ Firebase sau mỗi 5 giây
+      setInterval(() => {
+        onValue(SoilRef,(snapshot) => {
+          const value = snapshot.val();
+          const timestamp = Date.now();
+
+          SoilData.push([timestamp,value]);
+
+          if (SoilData.length > 3) {
+            SoilData.shift(); // Xóa điểm đầu tiên
+
+            // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+            const firstTimestamp = SoilData[0][0];
+            const lastTimestamp = SoilData[SoilData.length - 1][0];
+
+            SoilChart.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+            SoilChart.series[0].setData(SoilData,true);
+          }
+        });
+      },5000);
+
+      //biểu đồ dòng điện (sạc)
+      const temperatureChart3 = Highcharts.chart('chart-temperature3',{
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg,
+          marginRight: 30,
+        },
+        title: {
+          text: 'Biểu đồ dòng điện (sạc)',
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 30,
+          labels: {
+            formatter: function () {
+              const localTimestamp = moment(this.value).tz('Asia/Ho_Chi_Minh').format('HH:mm:ss DD-MM-YYYY');
+              return '<span style="white-space: nowrap;">' + localTimestamp + '</span>';
+            },
+            useHTML: true,
+            y: 25, // Khoảng cách dọc giữa label và trục y
+          },
+        },
+        yAxis: {
+          title: {
+            text: 'Dòng điện (A)',
+          },
+        },
+        series: [
+          {
+            name: 'Dòng điện (sạc)',
+            data: [], // Dữ liệu sẽ được cập nhật từ Firebase
+          },
+        ],
+      });
+
+      const temperatureRef3 = ref(database,'Energy/Solar/Current');
+      const temperatureData3 = []; // Mảng lưu trữ dữ liệu
+
+      onValue(temperatureRef3,(snapshot) => {
+        const value = snapshot.val();
+        const timestamp = Date.now();
+
+        temperatureData3.push([timestamp,value]);
+
+        if (temperatureData3.length > 1) {
+          temperatureData3.shift(); // Xóa điểm đầu tiên
+
+          // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+          const firstTimestamp = temperatureData3[0][0];
+          const lastTimestamp = temperatureData3[temperatureData3.length - 1][0];
+          temperatureChart3.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+        }
+
+        temperatureChart3.series[0].update({
+          data: temperatureData3,
+        },true);
+      });
+
+      // Cập nhật giá trị từ Firebase sau mỗi 5 giây
+      setInterval(() => {
+        onValue(temperatureRef3,(snapshot) => {
+          const value = snapshot.val();
+          const timestamp = Date.now();
+
+          temperatureData3.push([timestamp,value]);
+
+          if (temperatureData3.length > 3) {
+            temperatureData3.shift(); // Xóa điểm đầu tiên
+
+            // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+            const firstTimestamp = temperatureData3[0][0];
+            const lastTimestamp = temperatureData3[temperatureData3.length - 1][0];
+
+            temperatureChart3.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+            temperatureChart3.series[0].setData(temperatureData3,true);
+          }
+        });
+      },5000);
+
+      //biểu đồ Công suất (sạc)
+      const HumidityChart3 = Highcharts.chart('chart-humidity3',{
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg,
+          marginRight: 30,
+        },
+        title: {
+          text: 'Biểu đồ công suất (sạc)',
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 30,
+          labels: {
+            formatter: function () {
+              const localTimestamp = moment(this.value).tz('Asia/Ho_Chi_Minh').format('HH:mm:ss DD-MM-YYYY');
+              return '<span style="white-space: nowrap;">' + localTimestamp + '</span>';
+            },
+            useHTML: true,
+            y: 25, // Khoảng cách dọc giữa label và trục y
+          },
+        },
+        yAxis: {
+          title: {
+            text: 'Công suất (W)',
+          },
+        },
+        series: [
+          {
+            name: 'Công suất (sạc)',
+            data: [], // Dữ liệu sẽ được cập nhật từ Firebase
+          },
+        ],
+      });
+
+      const HumidityRef3 = ref(database,'Energy/Solar/Power');
+      const HumidityData3 = []; // Mảng lưu trữ dữ liệu
+
+      onValue(HumidityRef3,(snapshot) => {
+        const value = snapshot.val();
+        const timestamp = Date.now();
+
+        HumidityData3.push([timestamp,value]);
+
+        if (HumidityData3.length > 1) {
+          HumidityData3.shift(); // Xóa điểm đầu tiên
+
+          // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+          const firstTimestamp = HumidityData3[0][0];
+          const lastTimestamp = HumidityData3[HumidityData3.length - 1][0];
+          temperatureChart3.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+        }
+
+        HumidityChart3.series[0].update({
+          data: HumidityData3,
+        },true);
+      });
+
+      // Cập nhật giá trị từ Firebase sau mỗi 5 giây
+      setInterval(() => {
+        onValue(HumidityRef3,(snapshot) => {
+          const value = snapshot.val();
+          const timestamp = Date.now();
+
+          HumidityData3.push([timestamp,value]);
+
+          if (HumidityData3.length > 3) {
+            HumidityData3.shift(); // Xóa điểm đầu tiên
+
+            // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+            const firstTimestamp = HumidityData3[0][0];
+            const lastTimestamp = HumidityData3[HumidityData3.length - 1][0];
+
+            HumidityChart3.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+            HumidityChart3.series[0].setData(HumidityData3,true);
+          }
+        });
+      },5000);
+
+      //biểu đồ cong suat (tiêu thụ)
+      const LightChart3 = Highcharts.chart('chart-light3',{
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg,
+          marginRight: 30,
+        },
+        title: {
+          text: 'Biểu đồ Công suất (tiêu thụ)',
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 30,
+          labels: {
+            formatter: function () {
+              const localTimestamp = moment(this.value).tz('Asia/Ho_Chi_Minh').format('HH:mm:ss DD-MM-YYYY');
+              return '<span style="white-space: nowrap;">' + localTimestamp + '</span>';
+            },
+            useHTML: true,
+            y: 25, // Khoảng cách dọc giữa label và trục y
+          },
+        },
+        yAxis: {
+          title: {
+            text: 'Công suất (W)',
+          },
+        },
+        series: [
+          {
+            name: 'Công suất (tiêu thụ)',
+            data: [], // Dữ liệu sẽ được cập nhật từ Firebase
+          },
+        ],
+      });
+
+      const LightRef3 = ref(database,'Energy/Load/Power');
+      const LightData3 = []; // Mảng lưu trữ dữ liệu
+
+      onValue(LightRef3,(snapshot) => {
+        const value = snapshot.val();
+        const timestamp = Date.now();
+
+        LightData3.push([timestamp,value]);
+
+        if (LightData3.length > 1) {
+          LightData3.shift(); // Xóa điểm đầu tiên
+
+          // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+          const firstTimestamp = LightData3[0][0];
+          const lastTimestamp = LightData3[LightData3.length - 1][0];
+          LightChart3.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+        }
+
+        LightChart3.series[0].update({
+          data: LightData3,
+        },true);
+      });
+
+      // Cập nhật giá trị từ Firebase sau mỗi 5 giây
+      setInterval(() => {
+        onValue(LightRef3,(snapshot) => {
+          const value = snapshot.val();
+          const timestamp = Date.now();
+
+          LightData3.push([timestamp,value]);
+
+          if (LightData3.length > 3) {
+            LightData3.shift(); // Xóa điểm đầu tiên
+
+            // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+            const firstTimestamp = LightData3[0][0];
+            const lastTimestamp = LightData3[LightData3.length - 1][0];
+
+            LightChart3.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+            LightChart3.series[0].setData(LightData3,true);
+          }
+        });
+      },5000);
+
+      //biểu đồ dong dien (tiêu thụ)
+      const SoilChart3 = Highcharts.chart('chart-soilmoisture3',{
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg,
+          marginRight: 30,
+        },
+        title: {
+          text: 'Biểu đồ dòng điện (tiêu thụ)',
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 30,
+          labels: {
+            formatter: function () {
+              const localTimestamp = moment(this.value).tz('Asia/Ho_Chi_Minh').format('HH:mm:ss DD-MM-YYYY');
+              return '<span style="white-space: nowrap;">' + localTimestamp + '</span>';
+            },
+            useHTML: true,
+            y: 25, // Khoảng cách dọc giữa label và trục y
+          },
+        },
+        yAxis: {
+          title: {
+            text: 'Dòng điện (A)',
+          },
+        },
+        series: [
+          {
+            name: 'Dòng điện (tiêu thụ)',
+            data: [], // Dữ liệu sẽ được cập nhật từ Firebase
+          },
+        ],
+      });
+
+      const SoilRef3 = ref(database,'Energy/Load/Current');
+      const SoilData3 = []; // Mảng lưu trữ dữ liệu
+
+      onValue(SoilRef3,(snapshot) => {
+        const value = snapshot.val();
+        const timestamp = Date.now();
+
+        SoilData3.push([timestamp,value]);
+
+        if (SoilData3.length > 1) {
+          SoilData3.shift(); // Xóa điểm đầu tiên
+
+          // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+          const firstTimestamp = SoilData3[0][0];
+          const lastTimestamp = SoilData3[SoilData3.length - 1][0];
+          SoilChart3.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+        }
+
+        SoilChart3.series[0].update({
+          data: SoilData3,
+        },true);
+      });
+
+      // Cập nhật giá trị từ Firebase sau mỗi 5 giây
+      setInterval(() => {
+        onValue(SoilRef3,(snapshot) => {
+          const value = snapshot.val();
+          const timestamp = Date.now();
+
+          SoilData3.push([timestamp,value]);
+
+          if (SoilData3.length > 3) {
+            SoilData3.shift(); // Xóa điểm đầu tiên
+
+            // Thiết lập lại giá trị tối thiểu và tối đa trên trục x
+            const firstTimestamp = SoilData3[0][0];
+            const lastTimestamp = SoilData3[SoilData3.length - 1][0];
+
+            SoilChart3.xAxis[0].setExtremes(firstTimestamp,lastTimestamp);
+            SoilChart3.series[0].setData(SoilData3,true);
+          }
+        });
+      },5000);
+
+      //MENU1
+      $(document).on("click",".menu-item1",function () {
+        //Xử lý khi nhấp chuột vào menu item 1
+        $(this).addClass("active-menu");
+        $(".container3").hide();
+        $(".container").show();
+        $(".menu-item2").removeClass("active-menu");
+        $("#display1").toggle();
+        $("#display2").toggle();
+      });
+
+      //MENU2
+      $(document).on("click",".menu-item2",function () {
+        //Xử lý khi nhấp chuột vào menu item 2
+        $(this).addClass("active-menu");
+        $(".menu-item1").removeClass("active-menu");
+        $(".container").hide();
+        $(".container3").show();
+        $("#display1").toggle();
+        $("#display2").toggle();
+      });
+    </script>
+    <footer> SVTH: Nguyễn Trọng Tấn & Phạm Văn Quốc- 19DTCLC1 </footer>
+</body>
+
+</html>

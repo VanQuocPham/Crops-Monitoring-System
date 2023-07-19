@@ -1,16 +1,4 @@
-#include <ArduinoJson.h>
-#include <BH1750.h>
-#include <DHT.h>
-#include <FirebaseESP32.h>
-#include <Keypad.h>
-#include <LiquidCrystal_I2C.h>
-#include <SimpleKalmanFilter.h>
-#include <WiFi.h>
-#include <Wire.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
+#include<main.h>
 
 #define FIREBASE_HOST "readtemphumi-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "qhMBENlso11IhSldZAvefbmN5gqqW5moVpqigphX"
@@ -102,23 +90,6 @@ char keyHoldTurnOff;
 float R1 = 30000.00;
 float R2 = 7500.00;
 
-bool turnOffRelayHandwork();
-void initWiFi();
-void setData(const char* field, const char* value);
-void keypadEvent(KeypadEvent key);
-void resetLCD();
-void selectModeActive();
-void reconnectWiFi();
-void displayParamSystem();
-void turnOnRelayHandwork();
-void initDisplay();
-String getData(const char* field);
-float* readCurrent(float pin);
-void getParamSensors();
-void updateCurrentPower();
-float readVoltage(float pin);
-float mapp(long x, long in_min, long in_max, long out_min, long out_max);
-void connectFirebase();
 void setup() {
     Serial.begin(115200);
     delay(1000);
